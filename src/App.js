@@ -6,6 +6,12 @@ import {instanceLocator,tokenUrl, secretKey} from "./chatConfig";
 
 
 class App extends Component {
+    constructor() {
+        super();
+        this.state={
+            messages:[]
+        };
+    }
     componentDidMount(){
         const tokenProvider = new Chatkit.TokenProvider(
             {
@@ -15,21 +21,31 @@ class App extends Component {
             {
                 instanceLocator,
                 tokenProvider,
-                userId: "bobik"
+                userId: "Don"
             });
-        chatManager.connect().then(currentUser=>console.log(currentUser))
+
+        chatManager.connect().then(currentUser => {
+               currentUser.subscribeToRoom({
+                   roomId:currentUser.rooms[0].id,
+                   hooks:{
+                       onMessage:message=>{
+                           this.setState(prevState=>{
+                               return {
+                                   messages:[...prevState.messages, message],
+                                   user:currentUser
+                               }
+                           })
+                       }
+                   }
+               })
+            }
+        )
+
     }
+
     render (){
         return(
-
-//     <ChatkitProvider
-//   instanceLocator={'<YOUR_INSTANCE_ID>'}
-//   tokenProvider={new TokenProvider({ url: '<YOUR_AUTH_URL>' })}
-//   userId={'<YOUR_USER_ID>'}
-// >
-//   <YourChatComponent />
-// </ChatkitProvider>
-            <ChatComponent/>
+            <ChatComponent messages={this.state.messages} user={this.state.user}/>
         )
     }
 }
