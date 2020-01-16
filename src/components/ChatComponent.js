@@ -4,19 +4,28 @@ import ChatWindow from "./ChatWindow.js";
 import AddRoom from "./AddRoom.js";
 import TextInput from "./TextInput.js"
 
-export default function ChatComponent(props){
-    let id = props.user?props.user.id:null;
-    return (
-        <div className="chat-component">
-            <div className="room-chat">
-                <Rooms user={props.user}/>
-                <ChatWindow messages={props.messages} user={props.user} id={id}/>
-            </div>
-            <div className="footer">
-                <AddRoom/>
-                <TextInput/>
-            </div>
+export default class ChatComponent extends React.Component {
 
-        </div>
-    )
-}
+    sendMessage=(message)=>{
+        this.props.user.sendSimpleMessage({
+            text: message,
+            roomId: this.props.roomId
+        });
+    }
+
+    render() {
+        return (
+            <div className="chat-component">
+                <div className="room-chat">
+                    <Rooms user={this.props.user}/>
+                    <ChatWindow messages={this.props.messages} user={this.props.user} id={this.props.user ? this.props.user.id : null}/>
+                </div>
+                <div className="footer">
+                    <AddRoom/>
+                    <TextInput send={this.sendMessage}/>
+                </div>
+
+            </div>
+            )
+        }
+    }

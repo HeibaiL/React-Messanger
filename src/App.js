@@ -9,30 +9,48 @@ class App extends Component {
     constructor() {
         super();
         this.state={
-            messages:[]
+            messages:[],
+            chatManager: new Chatkit.ChatManager(
+                {
+                    instanceLocator,
+                    tokenProvider:new Chatkit.TokenProvider(
+                        {
+                            url: tokenUrl
+                        }),
+                    userId: "Don"
+                })
         };
     }
+    changeRoom(name){
+        this.state.chatManager.connect().then(currentUser => {
+                currentUser.subscribeToRoom({
+                    roomId:currentUser.rooms[0].id,
+                    hooks:{
+                        onMessage: message=>{
+                            this.setState(prevState=>{
+                                console.log(currentUser.rooms)
+                                return {
+                                    messages:[...prevState.messages, message],
+                                    user: currentUser
+                                }
+                            })
+                        }
+                    }
+                })
+            }
+        )
+    }
     componentDidMount(){
-        const tokenProvider = new Chatkit.TokenProvider(
-            {
-                url: tokenUrl
-            });
-        const chatManager = new Chatkit.ChatManager(
-            {
-                instanceLocator,
-                tokenProvider,
-                userId: "Don"
-            });
-
-        chatManager.connect().then(currentUser => {
+        this.state.chatManager.connect().then(currentUser => {
                currentUser.subscribeToRoom({
                    roomId:currentUser.rooms[0].id,
                    hooks:{
-                       onMessage:message=>{
+                       onMessage: message=>{
                            this.setState(prevState=>{
                                return {
                                    messages:[...prevState.messages, message],
-                                   user:currentUser
+                                   user: currentUser,
+                                   roomId:currentUser.rooms[0].id
                                }
                            })
                        }
@@ -40,14 +58,14 @@ class App extends Component {
                })
             }
         )
-
     }
 
     render (){
-        return(
-            <ChatComponent messages={this.state.messages} user={this.state.user}/>
-        )
+        console.log(this.state)
+            return (
+                <ChatComponent messages={this.state.messages} user={this.state.user} roomId={this.state.roomId}/>
+            )
+        }
     }
-}
 
 export default App;
