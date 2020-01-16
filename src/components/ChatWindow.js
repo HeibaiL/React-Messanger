@@ -1,5 +1,6 @@
 import React,{Component} from "react";
 export default function ChatWindowComponent(props){
+
      const renderMessage = messages => {
         return messages.map( message => {
             if(message.senderId == props.id) {
@@ -17,6 +18,7 @@ export default function ChatWindowComponent(props){
               }
             })
         }
+
         return (
             <div className="chat-window">
                 <div className="chat-content">

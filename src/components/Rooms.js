@@ -15,10 +15,6 @@ export default function Rooms (props){
                     <h2>Your Rooms:</h2>
                     <ul>
                         {renderRooms(props.user)}
-                        {/*<li># room1</li>*/}
-                        {/*<li># room2</li>*/}
-                        {/*<li># room3</li>*/}
-                        {/*<li># room4</li>*/}
                     </ul>
                 </div>
                 
