@@ -11,7 +11,7 @@ export default class TextInput extends Component{
 
     handleKeyPress=(e)=>{
         if(e.keyCode===13&&this.state.text.length>0){
-            this.props.send(this.state.text)
+            this.props.sendMessage(this.state.text)
             e.target.value=""
         }
 

@@ -30,7 +30,7 @@ body{
 .rooms h2{
   color:white;
   text-transform: uppercase;
-  font-size:22px;
+  font-size:24px;
 }
 .rooms-container{
   width:80%;
@@ -41,7 +41,7 @@ body{
   list-style: none;
 }
 .rooms-container li{
-  font-size:18px;
+  font-size:22px;
   margin:5px 0 5px 0;
   opacity:0.7;
   cursor: pointer;
@@ -56,7 +56,6 @@ body{
   align-items: center;
   justify-content: space-between;
   cursor:pointer;
-
 }
 .add-room p:first-child{
   margin-left:5px;
@@ -104,7 +103,6 @@ form{
   padding:15px;
 
 }
-
 .messages {
   margin:10px;
   display: flex;
@@ -161,4 +159,50 @@ form{
 }
 .partner{
   align-items:flex-start;
+}
+.room-element{
+  cursor: auto;
+  width:40vw;
+  height:15vw;
+  position: absolute;
+  top:30%;
+  left:50%;
+  margin-left:-20vw;
+  background:rgb(0, 230, 230);
+  border-radius:20px;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.create-room{
+  text-align: center;
+}
+.create-room input{
+  border-radius:10px;
+  height:3vh;
+  font-size:20px;
+  font-weight:bold;
+  padding:0 10px;
+}
+.create-room a{
+  border: 1px solid grey;
+  padding:10px 20px;
+  border-radius:15px;
+  cursor:pointer;
+  transition:0.6s ease;
+}
+.create-room input:focus{
+  outline-width: 0;
+}
+.room-buttons{
+  width:80%;
+  margin:0 auto;
+  margin-top:20px;
+  display:flex;
+  justify-content: space-between;
+}
+.create-room a:hover{
+  background: rgb(204, 102, 153);
+  transition:0.6s ease;
 }
