@@ -1,9 +1,9 @@
 import React,{Component} from "react";
 export default function ChatWindowComponent(props){
-
      const renderMessage = messages => {
+
         return messages.map( message => {
-            if(message.senderId == props.id) {
+            if(message.senderId === props.id) {
                 return (
                     <div className="user messages" key={message.id}>
                         <p className="message">{message.text}</p>

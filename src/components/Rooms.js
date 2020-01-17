@@ -3,9 +3,9 @@ import React,{Component} from "react";
 export default function Rooms (props){
 
     const renderRooms=user=>{
-      if(user){
-          return user.rooms.map((room,index)=>{
-              return <li key={index}>{room.name}</li>
+      if(props.rooms){
+          return props.rooms.map((room,index)=>{
+              return <li key={index} onClick={props.changeRoom}>{room.name}</li>
           })
       }
     }
