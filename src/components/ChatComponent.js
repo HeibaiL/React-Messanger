@@ -17,7 +17,7 @@ export default class ChatComponent extends React.Component {
         return (
             <div className="chat-component">
                 <div className="room-chat">
-                    <Rooms user={this.props.user}/>
+                    <Rooms user={this.props.user} changeRoom={this.props.changeRoom}/>
                     <ChatWindow messages={this.props.messages} user={this.props.user} id={this.props.user ? this.props.user.id : null}/>
                 </div>
                 <div className="footer">
