@@ -44,17 +44,16 @@ class App extends Component {
     };
 
     changeRoom = (e) => {
+        let name = e.target.innerHTML.slice(1);
         let disconnect = new Promise(resolve=>
             resolve(this.state.chatManager.disconnect()
             )
         );
         this.setState({messages:[]})
-        let name = e.target.innerHTML;
         //ASK ABOUT PROMISES HERE
         //TODO
         disconnect.then(this.state.chatManager.connect().then(currentUser => {
             let room = currentUser.rooms.filter(room=>room.name==name)[0];
-            console.log(room.id)
             currentUser.subscribeToRoom({
                 roomId:room.id,
                 hooks:{
@@ -62,7 +61,6 @@ class App extends Component {
                         this.setState(prevState=>{
                             return {
                                 messages:[...prevState.messages, message],
-                                user: currentUser,
                                 roomId:room.id
                             }
                         })
