@@ -39,12 +39,23 @@ body{
 .rooms-container ul{
   color:white;
   list-style: none;
+  display: inline;
 }
 .rooms-container li{
+  width:80%;
   font-size:22px;
   margin:5px 0 5px 0;
   opacity:0.7;
   cursor: pointer;
+  display:flex;
+  justify-content: space-between;
+
+}
+.rooms-container span{
+  flex:1;
+}
+.room-container i{
+  flex:1;
 }
 .rooms-container li:hover{
   opacity:1;
@@ -205,4 +216,28 @@ form{
 .create-room a:hover{
   background: rgb(204, 102, 153);
   transition:0.6s ease;
+}
+.close {
+  width: 32px;
+  height: 32px;
+  position: relative;
+  right:0;
+  justify-content: space-between;
+}
+.close:hover {
+}
+.close:before, .close:after {
+  position: absolute;
+  left: 15px;
+  content: ' ';
+  height: 20px;
+  width: 4px;
+  border-radius: 5px;
+  background-color: #fff
+}
+.close:before {
+  transform: rotate(45deg);
+}
+.close:after {
+  transform: rotate(-45deg);
 }

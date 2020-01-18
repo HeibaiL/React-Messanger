@@ -2,16 +2,8 @@ import React, {Component} from 'react';
 import Chatkit from "@pusher/chatkit-client";
 import './App.css';
 import ChatComponent from "./components/ChatComponent.js"
-import {instanceLocator, tokenUrl} from "./chatConfig";
+import {chatManager} from "./chatConfig";
 
-const chatManager = new Chatkit.ChatManager({
-    instanceLocator,
-    tokenProvider: new Chatkit.TokenProvider(
-        {
-            url: tokenUrl
-        }),
-    userId: "Don"
-});
 
 class App extends Component {
     state = {
@@ -63,14 +55,23 @@ class App extends Component {
             });
         }
     };
+    deleteRoom=(roomId)=>{
+        const {currentUser}=this.state;
+        currentUser.leaveRoom({roomId}).then(currentUser=>this.setState(prevState=>({currentUser:prevState.currentUser})))
+
+    }
 
     render() {
         const {
             roomId,
             currentUser
         } = this.state;
+        if(currentUser){
+        }
+
         return (
             <ChatComponent
+                deleteRoom={this.deleteRoom}
                 roomId={roomId}
                 user={currentUser}
                 makeRoom={this.makeRoom}
