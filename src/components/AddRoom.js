@@ -6,7 +6,7 @@ export default class AddRoom extends Component{
     }
     addRoomFn=(e)=>{
         let el = e.target;
-        if(el.className=="add-room"||el.parentElement.className=="add-room"){
+        if(el.className === "add-room"||el.parentElement.className === "add-room"){
             this.setState({active:true})
         }
 
