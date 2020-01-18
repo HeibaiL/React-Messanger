@@ -1,101 +1,84 @@
-import React,{Component} from 'react';
-import Chatkit from "@pusher/chatkit-client/";
+import React, {Component} from 'react';
+import Chatkit from "@pusher/chatkit-client";
 import './App.css';
 import ChatComponent from "./components/ChatComponent.js"
-import {instanceLocator,tokenUrl, secretKey} from "./chatConfig";
+import {instanceLocator, tokenUrl} from "./chatConfig";
 
+const chatManager = new Chatkit.ChatManager({
+    instanceLocator,
+    tokenProvider: new Chatkit.TokenProvider(
+        {
+            url: tokenUrl
+        }),
+    userId: "Don"
+});
 
 class App extends Component {
-    constructor() {
-        super();
-        this.state={
-            messages:[],
-            rooms:[],
-            chatManager: new Chatkit.ChatManager(
-                {
-                    instanceLocator,
-                    tokenProvider: new Chatkit.TokenProvider(
-                        {
-                            url: tokenUrl
-                        }),
-                    userId: "Don"
-                })
-        };
+    state = {
+        roomId: undefined,
+        currentUser: undefined,
     };
 
-    componentDidMount(){
-        this.showRooms()
-        this.state.chatManager.connect().then(currentUser=>{
-            this.setState({user:currentUser})
-        })
-    }
-    showRooms=()=>{
-        this.state.chatManager.connect().then(currentUser=>{
-            this.setState({rooms:[].concat(currentUser.rooms)})
+    componentDidMount() {
+        chatManager.connect().then(currentUser => {
+            this.setState({
+                currentUser
+            })
         })
     }
 
+    // componentWillUnmount() {
+    //     chatManager.disconnect()
+    // }
 
-    sendMessage=(message)=>{
-        this.state.user.sendSimpleMessage({
+    sendMessage = (message) => {
+        const {currentUser, roomId} = this.state;
+
+        currentUser.sendSimpleMessage({
+            roomId,
             text: message,
-            roomId: this.state.roomId
         });
     };
 
-    changeRoom = (e) => {
-        let name = e.target.innerHTML.slice(1);
-        let disconnect = new Promise(resolve=>
-            resolve(this.state.chatManager.disconnect()
-            )
-        );
-        this.setState({messages:[]})
-        //ASK ABOUT PROMISES HERE
-        //TODO
-        disconnect.then(this.state.chatManager.connect().then(currentUser => {
-            let room = currentUser.rooms.filter(room=>room.name==name)[0];
-            currentUser.subscribeToRoom({
-                roomId:room.id,
-                hooks:{
-                    onMessage: message=>{
-                        this.setState(prevState=>{
-                            return {
-                                messages:[...prevState.messages, message],
-                                roomId:room.id
-                            }
-                        })
-                    }
-                }
-            })
-        }
-    ))
+    changeRoom = (name) => {
+        const {
+            currentUser: {
+                rooms
+            }
+        } = this.state;
+        this.setState({roomId: name});
     };
 
-    makeRoom=(name)=> {
-        if(name!=="") {
-            this.state.chatManager.connect().then(currentUser => {
-                currentUser.createRoom({
-                    id: name,
-                    name,
-                    private: true
-                }).then(() => this.showRooms())
-                    .then(this.setState({roomId: name}))
-                    .then(this.sendMessage("Created New Room"))
-            })
-        }
-    }
+    makeRoom = (name) => {
+        const {currentUser} = this.state;
 
-    render (){
-            return (
-                <ChatComponent messages={this.state.messages}
-                               user={this.state.user}
-                               roomId={this.state.roomId}
-                               rooms={this.state.rooms}
-                               changeRoom={this.changeRoom}
-                                sendMessage={this.sendMessage}
-                                makeRoom={this.makeRoom}/>
-            )
+        if (name) {
+            currentUser.createRoom({
+                name,
+                id: name,
+                private: true
+            }).then(() => {
+                this.setState({roomId: name});
+                this.sendMessage("Created New Room");
+            });
         }
+    };
+
+    render() {
+        const {
+            roomId,
+            currentUser
+        } = this.state;
+        return (
+            <ChatComponent
+                roomId={roomId}
+                user={currentUser}
+                makeRoom={this.makeRoom}
+                changeRoom={this.changeRoom}
+                sendMessage={this.sendMessage}
+            />
+        )
     }
+}
 
 export default App;
