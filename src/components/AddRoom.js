@@ -13,7 +13,7 @@ export default class AddRoom extends Component{
     }
     handleChange=(e)=>{
         const {className}=e.target;
-        this.setState({[className]:e.target.value})
+        this.setState({[className]:e.target.value});
     }
 
     cancel=()=>{

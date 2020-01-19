@@ -12,14 +12,16 @@ export default class ChatComponent extends React.Component {
             makeRoom,
             changeRoom,
             sendMessage,
-            user
+            user,
+            deleteRoom
         } = this.props;
         const { rooms } = user || {};
         return (
             <div className="chat-component">
                 <div className="room-chat">
                     <Rooms
-                        rooms={rooms}
+                        deleteRoom={deleteRoom}
+                        user={user}
                         changeRoom={changeRoom}
                     />
                     <ChatWindow

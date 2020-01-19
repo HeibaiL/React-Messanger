@@ -14,7 +14,6 @@ class ChatWindowComponent extends React.Component{
                hooks: {
                    onMessage: msg => {
                        this.setState(state => {
-                           console.log(msg)
                            return({
                            messages: state.messages.concat(msg)
                        })})
@@ -26,10 +25,8 @@ class ChatWindowComponent extends React.Component{
 
 
     render() {
-        console.log(this.state.messages)
        const { user } = this.props;
        const { messages } = this.state;
-
         return (
             <div className="chat-window">
                 <div className="chat-content">
