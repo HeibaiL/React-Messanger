@@ -48,7 +48,7 @@ class App extends Component {
             currentUser.createRoom({
                 name,
                 id: name,
-                private: true
+                private: false
             }).then(() => {
                 this.setState({roomId: name});
                 this.sendMessage("Created New Room");
@@ -66,9 +66,6 @@ class App extends Component {
             roomId,
             currentUser
         } = this.state;
-        if(currentUser){
-        }
-
         return (
             <ChatComponent
                 deleteRoom={this.deleteRoom}

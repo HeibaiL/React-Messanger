@@ -21,7 +21,7 @@ export default class ChatComponent extends React.Component {
                 <div className="room-chat">
                     <Rooms
                         deleteRoom={deleteRoom}
-                        rooms={rooms}
+                        user={user}
                         changeRoom={changeRoom}
                     />
                     <ChatWindow

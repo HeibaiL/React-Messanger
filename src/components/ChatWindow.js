@@ -27,7 +27,6 @@ class ChatWindowComponent extends React.Component{
     render() {
        const { user } = this.props;
        const { messages } = this.state;
-
         return (
             <div className="chat-window">
                 <div className="chat-content">
