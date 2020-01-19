@@ -1,12 +1,14 @@
 import React, {Component} from 'react';
-import Chatkit from "@pusher/chatkit-client";
+
 import './App.css';
-import ChatComponent from "./components/ChatComponent.js"
+import {LoggingWindow} from "./components/LoggingWindow";
+import ChatComponent from "./components/ChatComponent";
 import {chatManager} from "./chatConfig";
 
 
 class App extends Component {
     state = {
+        isLogged:false,
         roomId: undefined,
         currentUser: undefined,
     };
@@ -59,18 +61,21 @@ class App extends Component {
     render() {
         const {
             roomId,
-            currentUser
+            currentUser,
+            isLogged
         } = this.state;
-        return (
-            <ChatComponent
-                deleteRoom={this.deleteRoom}
-                roomId={roomId}
-                user={currentUser}
-                makeRoom={this.makeRoom}
-                changeRoom={this.changeRoom}
-                sendMessage={this.sendMessage}
-            />
-        )
+     if(isLogged){
+       return  <ChatComponent
+             deleteRoom={this.deleteRoom}
+             roomId={roomId}
+             user={currentUser}
+             makeRoom={this.makeRoom}
+             changeRoom={this.changeRoom}
+             sendMessage={this.sendMessage}
+         />
+     }else{
+         return <LoggingWindow/>
+     }
     }
 }
 

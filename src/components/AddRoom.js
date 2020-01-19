@@ -23,17 +23,17 @@ export default class AddRoom extends Component{
         return (
             <div onClick={this.addRoomFn} className="add-room">
                 {this.state.active?
-                    <div className="room-element">
+                    <div className="container">
                         <div className="create-room">
                             <h2>
                                 Enter Room Name
                             </h2>
                             <input className="inputText" onChange={this.handleChange}/>
                             <div className="room-buttons">
-                                <a onClick={this.cancel}>
+                                <a className="button" onClick={this.cancel}>
                                      Cancel
                                 </a>
-                                <a onClick={() => {
+                                <a className="button" onClick={() => {
                                     this.props.makeRoom(this.state.inputText)
                                     this.cancel()}
                                 }>

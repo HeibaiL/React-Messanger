@@ -8,12 +8,21 @@ class Rooms extends React.Component {
     availableRooms : []
         }
     }
+    setRooms(){
+        if(this.props.user){
+            const {rooms,getJoinableRooms} = this.props.user;
+            this.setState({rooms})
+            return this.props.user.getJoinableRooms().then(rooms => this.setState({availableRooms: rooms}))
+        }
+
+    }
+    componentDidMount(){
+        this.setRooms()
+    }
 
     componentDidUpdate(prevProps) {
-        const {rooms,getJoinableRooms}=this.props.user;
         if(prevProps !== this.props) {
-            this.props.user.getJoinableRooms().then(rooms => this.setState({availableRooms: rooms}))
-            this.setState({rooms})
+          this.setRooms()
         }
 
     }
