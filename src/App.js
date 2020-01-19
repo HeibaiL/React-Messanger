@@ -32,13 +32,8 @@ class App extends Component {
         });
     };
 
-    changeRoom = (name) => {
-        const {
-            currentUser: {
-                rooms
-            }
-        } = this.state;
-        this.setState({roomId: name});
+    changeRoom = (id) => {
+        this.setState({roomId: id});
     };
 
     makeRoom = (name) => {
