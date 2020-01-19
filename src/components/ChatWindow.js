@@ -7,22 +7,29 @@ class ChatWindowComponent extends React.Component{
 
    componentWillUpdate(props) {
        const { roomId, user } = props;
-       if(roomId !== this.props.roomId) {
-           this.setState({messages:[]})
-           user.subscribeToRoom({
-               roomId,
-               hooks: {
-                   onMessage: msg => {
-                       this.setState(state => {
-                           return({
-                           messages: state.messages.concat(msg)
-                       })})
-                   }
-               }
-           });
-       }
-   }
 
+       if(roomId !== this.props.roomId) {
+           let isAvailable;
+           user.getJoinableRooms()
+               .then(rooms=>isAvailable=rooms.some(room=>room.id==roomId))
+               .then(isAvailable=> {
+               if (!isAvailable) {
+                   this.setState({messages:[]})
+                   user.subscribeToRoom({
+                       roomId,
+                       hooks: {
+                           onMessage: msg => {
+                               this.setState(state => {
+                                   return({
+                                       messages: state.messages.concat(msg)
+                                   })})
+                           }
+                       }
+                   });
+               }else alert("Room is unavailable for now, sorry")
+               }
+           )}
+   }
 
     render() {
        const { user } = this.props;

@@ -20,11 +20,11 @@ class Rooms extends React.Component {
 
     displayRooms(rooms) {
         const {deleteRoom, changeRoom} = this.props;
-        return rooms.map(({createdAt, name, roomId, id}) => {
+        return rooms.map(({createdAt, name, id}) => {
                 return (
                     <li key={createdAt} >
-                        <span onClick={() =>changeRoom(name)}> #{name}</span>
-                        <i onClick={() => deleteRoom(id)}><a href="#" className="close"/></i>
+                        <span onClick={() =>changeRoom(id)}> #{name}</span>
+                        <i onClick={() => deleteRoom(id)}> {rooms === this.state.availableRooms? null: <a href="#" className="close"/>} </i>
                     </li>
                 )
             }
