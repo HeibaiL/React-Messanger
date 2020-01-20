@@ -36,14 +36,14 @@ class Rooms extends React.Component {
             if(rooms === this.state.availableRooms){
                 return (
                     <li key={createdAt} >
-                        <span onClick={ ()=>console.log("qq")}> #{name}</span>
-                        <i><a>join</a></i>
+                        <span> #{name}</span>
+                        <i ><a onClick={()=>changeRoom(id)}>join</a></i>
                     </li>
                 )
             }else{
                 return (
                     <li key={createdAt} >
-                        <span onClick={rooms === this.state.availableRooms? ()=>console.log("qq"):() =>changeRoom(id)}> #{name}</span>
+                        <span onClick={()=>changeRoom(id)}> #{name}</span>
                         <i onClick={() => deleteRoom(id)}><a href="#" className="close"/></i>
                     </li>
                     )
