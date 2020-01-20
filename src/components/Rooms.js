@@ -9,10 +9,11 @@ class Rooms extends React.Component {
         }
     }
     setRooms(){
-        if(this.props.user){
-            const {rooms,getJoinableRooms} = this.props.user;
-            this.setState({rooms})
-            return this.props.user.getJoinableRooms().then(rooms => this.setState({availableRooms: rooms}))
+        const {user} = this.props
+        if(user){
+            const {rooms,getJoinableRooms} = user;
+            this.setState({rooms});
+            // return user.getJoinableRooms().then(rooms => this.setState({availableRooms: rooms}))
         }
 
     }
@@ -24,7 +25,6 @@ class Rooms extends React.Component {
         if(prevProps !== this.props) {
           this.setRooms()
         }
-
     }
 
     displayRooms(rooms) {
@@ -58,7 +58,7 @@ class Rooms extends React.Component {
             </div>
         );
     }
-};
+}
 
 
 

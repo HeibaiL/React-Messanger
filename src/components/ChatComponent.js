@@ -1,4 +1,5 @@
 import React from "react";
+
 import Rooms from "./Rooms.js";
 import ChatWindow from "./ChatWindow.js";
 import AddRoom from "./AddRoom.js";
@@ -13,7 +14,8 @@ export default class ChatComponent extends React.Component {
             changeRoom,
             sendMessage,
             user,
-            deleteRoom
+            deleteRoom,
+            handleChange
         } = this.props;
         const { rooms } = user || {};
         return (
@@ -30,8 +32,8 @@ export default class ChatComponent extends React.Component {
                     />
                 </div>
                 <div className="footer">
-                    <AddRoom makeRoom={makeRoom}/>
-                    <TextInput sendMessage={sendMessage}/>
+                    <AddRoom makeRoom={makeRoom} handleChange={handleChange}/>
+                    <TextInput handleChange={handleChange} sendMessage={sendMessage}/>
                 </div>
             </div>
             )
