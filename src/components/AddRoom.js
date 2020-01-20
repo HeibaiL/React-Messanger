@@ -1,25 +1,22 @@
 import React,{Component} from "react";
-export default class AddRoom extends Component{
+
+class AddRoom extends Component{
     state={
         active:false,
         inputText:""
-    }
+    };
     addRoomFn=(e)=>{
         let el = e.target;
         if(el.className === "add-room"||el.parentElement.className === "add-room"){
             this.setState({active:true})
         }
 
-    }
-    handleChange=(e)=>{
-        const {className}=e.target;
-        this.setState({[className]:e.target.value});
-    }
-
+    };
     cancel=()=>{
         this.setState({active:false})
-    }
+    };
     render(){
+        const {handleChange, makeRoom}=this.props;
         return (
             <div onClick={this.addRoomFn} className="add-room">
                 {this.state.active?
@@ -28,13 +25,13 @@ export default class AddRoom extends Component{
                             <h2>
                                 Enter Room Name
                             </h2>
-                            <input className="inputText" onChange={this.handleChange}/>
+                            <input className="inputText" name="inputText" onChange={handleChange.bind(this)}/>
                             <div className="room-buttons">
                                 <a className="button" onClick={this.cancel}>
                                      Cancel
                                 </a>
                                 <a className="button" onClick={() => {
-                                    this.props.makeRoom(this.state.inputText)
+                                    makeRoom(this.state.inputText);
                                     this.cancel()}
                                 }>
                                     Confirm
@@ -49,5 +46,6 @@ export default class AddRoom extends Component{
             </div>
         )
     }
-
 }
+
+export default AddRoom;

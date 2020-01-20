@@ -1,21 +1,17 @@
 import React,{Component} from "react";
+
 export default class TextInput extends Component{
     state={
         text:""
-    }
-
-    handleChange=(e)=>{
-       const {className}=e.target;
-       this.setState({[className]:e.target.value})
-    }
+    };
 
     handleKeyPress=(e)=>{
         if(e.keyCode===13&&this.state.text.length>0){
-            this.props.sendMessage(this.state.text)
+            this.props.sendMessage(this.state.text);
             e.target.value=""
         }
 
-    }
+    };
     componentDidMount() {
         document.addEventListener("keydown", this.handleKeyPress)
     }
@@ -24,7 +20,7 @@ export default class TextInput extends Component{
         return (
             <div className="input-block">
                 <form>
-                  <textarea className="text" onChange={this.handleChange}/>
+                  <textarea name="text" className="text" onChange={this.props.handleChange.bind(this)}/>
                 </form>
             </div>
         )
