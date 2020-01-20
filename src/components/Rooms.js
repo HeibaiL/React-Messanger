@@ -8,14 +8,13 @@ class Rooms extends React.Component {
     availableRooms : []
         }
     }
-    setRooms(){
-        const {user} = this.props
-        if(user){
-            const {rooms,getJoinableRooms} = user;
-            this.setState({rooms});
-            // return user.getJoinableRooms().then(rooms => this.setState({availableRooms: rooms}))
-        }
 
+    setRooms(){
+        if(this.props.user){
+            const {rooms,getJoinableRooms} = this.props.user;
+            this.setState({rooms});
+            return getJoinableRooms().then(rooms => this.setState({availableRooms: rooms}))
+        }
     }
     componentDidMount(){
         this.setRooms()
@@ -26,16 +25,29 @@ class Rooms extends React.Component {
           this.setRooms()
         }
     }
+    //TODO: UNSUBSCRIBE ON WILLUNMOUNT METHOD
+    // componentWillUnmount() {
+    //     console.log(this.props.user.subscribtions)
+    // }
 
     displayRooms(rooms) {
         const {deleteRoom, changeRoom} = this.props;
         return rooms.map(({createdAt, name, id}) => {
+            if(rooms === this.state.availableRooms){
                 return (
                     <li key={createdAt} >
-                        <span onClick={() =>changeRoom(id)}> #{name}</span>
-                        <i onClick={() => deleteRoom(id)}> {rooms === this.state.availableRooms? null: <a href="#" className="close"/>} </i>
+                        <span onClick={ ()=>console.log("qq")}> #{name}</span>
+                        <i><a>join</a></i>
                     </li>
                 )
+            }else{
+                return (
+                    <li key={createdAt} >
+                        <span onClick={rooms === this.state.availableRooms? ()=>console.log("qq"):() =>changeRoom(id)}> #{name}</span>
+                        <i onClick={() => deleteRoom(id)}><a href="#" className="close"/></i>
+                    </li>
+                    )
+                }
             }
         )
     }

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 
 import './App.css';
+import {users} from "./users"
 import {LoggingWindow} from "./components/LoggingWindow";
 import ChatComponent from "./components/ChatComponent";
 import {chatManager} from "./chatConfig";
@@ -21,22 +22,24 @@ class App extends Component {
             })
         })
     }
-
-    getLoginPassword=(login, password)=>{
-        if(login==="me"){
-            if(password==1){
-                this.setState({isLogged:true})
-            }
+    checkPassword(password){
+        if(users.some(user=>user.password==password)){
+            this.setState({isLogged:true})
+        }else{
+            return
         }
     }
-    // componentWillUnmount() {
-    //     chatManager.disconnect()
-    // }
+    getLoginPassword=(login, password)=>{
+       if(users.some(user=>user.login===login)){
+          this.checkPassword(password)
+       }else{
+
+       }
+    }
 
     loadScreen=()=>{
         this.setState({loading:true})
         if(this.state.currentUser) {
-            // console.log(this.state.currentUser.rooms[0].id)
             setTimeout(() => this.setState(
                 {
                     loading: false,
@@ -49,9 +52,9 @@ class App extends Component {
     handleChange(e){
         this.setState({[e.target.name]:e.target.value})
     }
+
     sendMessage = (message) => {
         const {currentUser, roomId} = this.state;
-
         currentUser.sendSimpleMessage({
             roomId,
             text: message,
@@ -88,6 +91,7 @@ class App extends Component {
             isLogged,
             loading
         } = this.state;
+
         if(loading){
             return (
                 <div className="lds-ellipsis">
