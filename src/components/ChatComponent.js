@@ -17,7 +17,6 @@ export default class ChatComponent extends React.Component {
             deleteRoom,
             handleChange
         } = this.props;
-        const { rooms } = user || {};
         return (
             <div className="chat-component">
                 <div className="room-chat">

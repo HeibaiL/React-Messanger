@@ -258,9 +258,11 @@ form{
   transform: rotate(-45deg);
 }
 .validation{
+  padding-top:0;
   background:rgb(74, 181, 243);
   height:30vh;
   display: flex;
+  overflow: hidden;
 }
 .validation h2{
   margin:1vh 0;
@@ -269,7 +271,15 @@ form{
   max-width:80%;
   flex-direction: column;
 }
-
+.onEmpty{
+  position: relative;
+  bottom:1vh;
+  border:1px solid;
+  padding:10px 5vw;
+  border-radius: 30px;
+  background:#FF4797;
+  color:white;
+}
 .validation input{
   padding-left:10px;
   font-size:22px;
