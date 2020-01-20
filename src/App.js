@@ -13,6 +13,7 @@ class App extends Component {
         isLogged:false,
         roomId: undefined,
         currentUser: undefined,
+        isIncorrect:false
     };
 
     componentDidMount() {
@@ -26,33 +27,34 @@ class App extends Component {
         if(users.some(user=>user.password==password)){
             this.setState({isLogged:true})
         }else{
-            return
+            this.setState({})
         }
     }
     getLoginPassword=(login, password)=>{
        if(users.some(user=>user.login===login)){
           this.checkPassword(password)
        }else{
-
+           this.setState({isIncorrect:true})
+           setTimeout(()=>this.setState({isIncorrect:false}),2000)
        }
     }
 
     loadScreen=()=>{
+        const {currentUser} = this.state;
         this.setState({loading:true})
-        if(this.state.currentUser) {
+        if(currentUser) {
             setTimeout(() => this.setState(
                 {
                     loading: false,
-                    roomId: this.state.currentUser.rooms[0].id
+                    roomId: currentUser.rooms[0]?currentUser.rooms[0].id:"0",
                 }
-            ), 1000)
+            ), 1500)
         }
     }
 
     handleChange(e){
         this.setState({[e.target.name]:e.target.value})
     }
-
     sendMessage = (message) => {
         const {currentUser, roomId} = this.state;
         currentUser.sendSimpleMessage({
@@ -80,7 +82,8 @@ class App extends Component {
     };
     deleteRoom=(roomId)=>{
         const {currentUser}=this.state;
-        currentUser.leaveRoom({roomId}).then(currentUser=>this.setState(prevState=>({currentUser:prevState.currentUser})))
+        currentUser.leaveRoom({roomId})
+            .then(currentUser=>this.setState(prevState=>({currentUser:prevState.currentUser})))
 
     };
 
@@ -91,7 +94,6 @@ class App extends Component {
             isLogged,
             loading
         } = this.state;
-
         if(loading){
             return (
                 <div className="lds-ellipsis">
@@ -100,7 +102,6 @@ class App extends Component {
                     <div></div>
                     <div></div>
                 </div>)
-
         }else if(isLogged){
            return  <ChatComponent
                 handleChange={this.handleChange}
@@ -112,7 +113,7 @@ class App extends Component {
                  sendMessage={this.sendMessage}
              />
          }else{
-             return <LoggingWindow loadScreen={this.loadScreen} getLoginPassword={this.getLoginPassword} handleChange={this.handleChange}/>
+             return <LoggingWindow isIncorrect={this.state.isIncorrect}loadScreen={this.loadScreen} getLoginPassword={this.getLoginPassword} handleChange={this.handleChange}/>
          }
     }
 }

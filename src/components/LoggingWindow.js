@@ -24,15 +24,17 @@ class LoggingWindow extends Component{
     }
 
     render(){
-        const {handleChange,getLoginPassword} = this.props;
+        const {handleChange,getLoginPassword,isIncorrect} = this.props;
         const {login,password,isEmpty} = this.state;
         return (
-            <div className="container validation">
-                {isEmpty? <div className="onEmpty">
-                    <p>Please, fill in all fields</p>
-                    </div>:
-                    null
-                }
+                 <div className="container validation">
+                    {isEmpty?
+                        <div className="onEmpty">
+                            <p>Please, fill in all fields</p>
+                        </div>:   null}
+                     {isIncorrect?<div className="onEmpty">
+                         <p>Incorrect login or password</p>
+                     </div>:   null}
                 <div className="field">
                     <div className="login">
                         <h2>

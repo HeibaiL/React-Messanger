@@ -34,7 +34,7 @@ class ChatWindowComponent extends React.Component{
                if (!isAvailable) {
                    this.setState({messages:[]});
                    this.showMessages()
-               }else alert("Room is unavailable for now, sorry")
+               }
                }
            )}
    }
