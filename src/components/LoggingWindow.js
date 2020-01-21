@@ -24,7 +24,7 @@ class LoggingWindow extends Component{
     }
 
     render(){
-        const {handleChange,getLoginPassword,isIncorrect} = this.props;
+        const {handleChange,checkLoginPassword,isIncorrect} = this.props;
         const {login,password,isEmpty} = this.state;
         return (
                  <div className="container validation">
@@ -52,7 +52,7 @@ class LoggingWindow extends Component{
                 <div className="login-button">
                     <a className="button"
                        onClick={
-                           ()=>{if(!this.emptyFieldCheck(login,password)) getLoginPassword(login, password);
+                           ()=>{if(!this.emptyFieldCheck(login,password)) checkLoginPassword(login, password);
                     }}>
                         Log In
                     </a>

@@ -8,7 +8,6 @@ class Rooms extends React.Component {
     availableRooms : []
         }
     }
-
     setRooms(){
         if(this.props.user){
             const {rooms,getJoinableRooms} = this.props.user;

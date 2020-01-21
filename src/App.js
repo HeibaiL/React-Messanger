@@ -11,82 +11,40 @@ class App extends Component {
     state = {
         loading:false,
         isLogged:false,
-        roomId: undefined,
         currentUser: undefined,
         isIncorrect:false
     };
+    showError(){
+        this.setState({isIncorrect:true})
+        setTimeout(()=>this.setState({isIncorrect:false}),2000)
+    }
 
-    componentDidMount() {
-        chatManager.connect().then(currentUser => {
-            this.setState({
-                currentUser
-            })
-        })
-    }
-    checkPassword(password){
-        if(users.some(user=>user.password === password)){
-            this.setState({loading:true})
-        }else{
-            this.setState({isIncorrect:true})
-            setTimeout(()=>this.setState({isIncorrect:false}),2000)
-        }
-    }
-    getLoginPassword=(login, password)=>{
-       if(users.some(user=>user.login === login)){
-          this.checkPassword(password)
-       }else{
-           this.setState({isIncorrect:true})
-           setTimeout(()=>this.setState({isIncorrect:false}),2000)
-       }
+    checkLoginPassword=(login, password)=>{
+        login = login.toString();
+        password = password.toString();
+          let user = users.filter( user => {
+              if (user.login === login) {
+                  if (user.password === password) return user
+              }
+          })[0]
+        if(user){
+            this.setState({currentUser:user, loading:true})
+            return user
+        }else this.showError()
     }
 
     loadScreen=()=>{
-        const {currentUser} = this.state;
-        if(currentUser) {
             setTimeout(() => this.setState(
                 {
                     loading: false,
-                    roomId: currentUser.rooms[0]?currentUser.rooms[0].id:"0",
                     isLogged:true
                 }
             ), 1500)
-        }
     }
 
     handleChange(e){
         this.setState({[e.target.name]:e.target.value})
     }
-    sendMessage = (message) => {
-        const {currentUser, roomId} = this.state;
-        currentUser.sendSimpleMessage({
-            roomId,
-            text: message,
-        });
-    };
-
-    changeRoom = (id) => {
-        this.setState({roomId: id});
-    };
-
-    makeRoom = (name) => {
-        const {currentUser} = this.state;
-        if (name) {
-            currentUser.createRoom({
-                name,
-                id: name,
-                private: false
-            }).then(() => {
-                this.setState({roomId: name});
-                this.sendMessage("Created New Room");
-            });
-        }
-    };
-    deleteRoom=(roomId)=>{
-        const {currentUser}=this.state;
-        currentUser.leaveRoom({roomId})
-            .then(currentUser=>this.setState(prevState=>({currentUser:prevState.currentUser})))
-
-    };
 
     render() {
         const {
@@ -106,15 +64,13 @@ class App extends Component {
         }else if(isLogged){
            return  <ChatComponent
                 handleChange={this.handleChange}
-                 deleteRoom={this.deleteRoom}
-                 roomId={roomId}
                  user={currentUser}
-                 makeRoom={this.makeRoom}
-                 changeRoom={this.changeRoom}
-                 sendMessage={this.sendMessage}
              />
          }else{
-             return <LoggingWindow isIncorrect={this.state.isIncorrect}loadScreen={this.loadScreen} getLoginPassword={this.getLoginPassword} handleChange={this.handleChange}/>
+             return <LoggingWindow
+                 isIncorrect={this.state.isIncorrect}
+                 loadScreen={this.loadScreen}
+                 checkLoginPassword={this.checkLoginPassword} handleChange={this.handleChange}/>
          }
     }
 }
