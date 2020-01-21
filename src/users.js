@@ -2,11 +2,13 @@ import React from "react"
 let users=[
     {
         login:"me",
-        password:"1"
+        password:"1",
+        id:"Don"
     },
     {
         login:"user1",
-        password:"234"
+        password:"234",
+        id:"bobik"
     },
     {
         login:"user2",
