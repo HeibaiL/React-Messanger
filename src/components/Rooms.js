@@ -24,11 +24,6 @@ class Rooms extends React.Component {
           this.setRooms()
         }
     }
-    //TODO: UNSUBSCRIBE ON WILLUNMOUNT METHOD
-    // componentWillUnmount() {
-    //     console.log(this.props.user.subscribtions)
-    // }
-
     displayRooms(rooms) {
         const {deleteRoom, changeRoom} = this.props;
         return rooms.map(({createdAt, name, id}) => {
@@ -36,7 +31,7 @@ class Rooms extends React.Component {
                 return (
                     <li key={createdAt} >
                         <span> #{name}</span>
-                        <i ><a onClick={()=>changeRoom(id)}>join</a></i>
+                        <i><a  href="#" onClick={()=>changeRoom(id)}>join</a></i>
                     </li>
                 )
             }else{

@@ -50,7 +50,7 @@ class LoggingWindow extends Component{
                     </div>
                 </div>
                 <div className="login-button">
-                    <a className="button"
+                    <a className="button" href="#"
                        onClick={
                            ()=>{if(!this.emptyFieldCheck(login,password)) checkLoginPassword(login, password);
                     }}>
