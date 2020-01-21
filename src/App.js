@@ -14,6 +14,7 @@ class App extends Component {
         currentUser: undefined,
         isIncorrect:false
     };
+
     showError(){
         this.setState({isIncorrect:true})
         setTimeout(()=>this.setState({isIncorrect:false}),2000)
@@ -29,7 +30,6 @@ class App extends Component {
           })[0]
         if(user){
             this.setState({currentUser:user, loading:true})
-            return user
         }else this.showError()
     }
 
