@@ -9,6 +9,11 @@ class ChatWindowComponent extends React.Component{
        this.showMessages()
     }
 
+    componentDidUpdate(props) {
+        if(props!== this.props){
+            this.showMessages()
+        }
+    }
     showMessages=()=>{
         const {roomId,user} = this.props;
         this.setState({messages:[]})
@@ -26,11 +31,7 @@ class ChatWindowComponent extends React.Component{
             });
         }
     }
-    componentDidUpdate(props) {
-      if(props!== this.props){
-          this.showMessages()
-        }
-   }
+
     render() {
 
        const { user } = this.props;

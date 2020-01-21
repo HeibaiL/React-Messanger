@@ -31,7 +31,7 @@ class Rooms extends React.Component {
                 return (
                     <li key={createdAt} >
                         <span> #{name}</span>
-                        <i><a  href="#" onClick={()=>changeRoom(id)}>join</a></i>
+                        <i><a className="join-room"href="#" onClick={()=>changeRoom(id)}>+</a></i>
                     </li>
                 )
             }else{

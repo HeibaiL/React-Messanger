@@ -287,8 +287,19 @@ form{
   height:3vh;
   width:25vw;
 }
-.login-button{
+.login-button .button{
+  text-decoration: none;
+  color:white
+}
+.join-room{
+  text-decoration: none;
+  position: relative;
+  bottom:2.5vh;
+  font-size:40px;
+  font-weight: bold;
   color:white;
+}
+.login-button{
   display: flex;
   width:25vw;
   margin-top:3vh;
