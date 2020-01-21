@@ -24,14 +24,15 @@ class App extends Component {
         })
     }
     checkPassword(password){
-        if(users.some(user=>user.password==password)){
-            this.setState({isLogged:true})
+        if(users.some(user=>user.password === password)){
+            this.setState({loading:true})
         }else{
-            this.setState({})
+            this.setState({isIncorrect:true})
+            setTimeout(()=>this.setState({isIncorrect:false}),2000)
         }
     }
     getLoginPassword=(login, password)=>{
-       if(users.some(user=>user.login===login)){
+       if(users.some(user=>user.login === login)){
           this.checkPassword(password)
        }else{
            this.setState({isIncorrect:true})
@@ -41,12 +42,12 @@ class App extends Component {
 
     loadScreen=()=>{
         const {currentUser} = this.state;
-        this.setState({loading:true})
         if(currentUser) {
             setTimeout(() => this.setState(
                 {
                     loading: false,
                     roomId: currentUser.rooms[0]?currentUser.rooms[0].id:"0",
+                    isLogged:true
                 }
             ), 1500)
         }
