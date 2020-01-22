@@ -54,9 +54,11 @@ export default class ChatComponent extends React.Component {
             .then(user=>this.setState(prevState=>({user:prevState.user})))
 
     };
+    componentWillUnmount() {
+        localStorage.clear()
+    }
 
     render() {
-
         const {deleteRoom, sendMessage,makeRoom,changeRoom} = this;
         const {handleChange} = this.props;
         const {user,roomId} = this.state;
