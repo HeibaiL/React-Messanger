@@ -49,6 +49,9 @@ class Rooms extends React.Component {
     render(){
         return (
             <div className="rooms">
+                <div className="logout">
+                  <i className="fa fa-sign-out" onClick={this.props.logOut}></i>
+                </div>
                 <div className="rooms-container">
                     <h2>Your Rooms:</h2>
                     <ul>

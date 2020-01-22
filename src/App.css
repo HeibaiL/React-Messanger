@@ -299,6 +299,17 @@ form{
   font-weight: bold;
   color:white;
 }
+
+.logout i{
+  font-size:25px;
+  width:25px;
+  color:white;
+  position: relative;
+  bottom:2vh;
+  left:20vw;
+  display: block;
+  cursor: pointer;
+}
 .login-button{
   display: flex;
   width:25vw;
@@ -311,7 +322,7 @@ form{
 }
 .lds-ellipsis {
   display: inline-block;
-  position: relative;
+  position: absolute;
   top:40%;
   left:calc(50% - 40px);
   width: 80px;

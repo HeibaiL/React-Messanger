@@ -21,6 +21,8 @@ export default class ChatComponent extends React.Component {
         })
         chatManager.connect().then(user=>this.setState({user,roomId:user.rooms[0].id}))
     }
+    //TODO: DELETEROOM FUNC SHOULD CHANGE STATE.ROOMID FOR THE FIRST AVAILABLE ROOM
+
 
     sendMessage = (message) => {
         const {user, roomId} = this.state;
@@ -59,13 +61,15 @@ export default class ChatComponent extends React.Component {
     }
 
     render() {
+
         const {deleteRoom, sendMessage,makeRoom,changeRoom} = this;
-        const {handleChange} = this.props;
+        const {handleChange,logOut} = this.props;
         const {user,roomId} = this.state;
         return (
             <div className="chat-component">
                 <div className="room-chat">
                     <Rooms
+                        logOut={logOut}
                         deleteRoom={deleteRoom}
                         user={user}
                         changeRoom={changeRoom}

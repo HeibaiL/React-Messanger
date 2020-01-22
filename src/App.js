@@ -4,6 +4,7 @@ import './App.css';
 import {users} from "./users"
 import {LoggingWindow} from "./components/LoggingWindow";
 import ChatComponent from "./components/ChatComponent";
+import {store} from "./index";
 
 
 class App extends Component {
@@ -57,14 +58,15 @@ class App extends Component {
                 </div>)
         }else if(currentUser){
            return  <ChatComponent
-                handleChange={this.handleChange}
-                 user={currentUser}
+               logOut={this.props.logOut}
+               handleChange={this.handleChange}
+               user={currentUser}
              />
          }else{
              return <LoggingWindow
-                 isIncorrect={isIncorrect}
-                 loadScreen={this.loadScreen}
-                 checkLoginPassword={this.checkLoginPassword} handleChange={this.handleChange}/>
+             isIncorrect={isIncorrect}
+             loadScreen={this.loadScreen}
+             checkLoginPassword={this.checkLoginPassword} handleChange={this.handleChange}/>
          }
     }
 }
