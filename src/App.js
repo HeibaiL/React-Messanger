@@ -10,8 +10,12 @@ class App extends Component {
     state = {
         loading:false,
         isLogged:false,
-        isIncorrect:false
+        isIncorrect:false,
     };
+
+    handleChange(e){
+        this.setState({[e.target.name]:e.target.value})
+    }
 
     showError(){
         this.setState({isIncorrect:true})
@@ -39,10 +43,6 @@ class App extends Component {
                     isLogged:true
                 }
             ), 1500)
-    }
-
-    handleChange(e){
-        this.setState({[e.target.name]:e.target.value})
     }
 
     render() {

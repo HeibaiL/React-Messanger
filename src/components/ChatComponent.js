@@ -56,6 +56,7 @@ export default class ChatComponent extends React.Component {
     };
 
     render() {
+
         const {deleteRoom, sendMessage,makeRoom,changeRoom} = this;
         const {handleChange} = this.props;
         const {user,roomId} = this.state;

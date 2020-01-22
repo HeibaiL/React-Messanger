@@ -1,24 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {createStore,combineReducers} from "redux";
-import {Provider,connect} from "react-redux";
-import {setCurrentUser} from "./store/App/actions"
+import {createStore} from "redux";
+import {Provider} from "react-redux";
 
 import './index.css';
-import App from './App';
+import AppContainer from './AppContainer';
 import {rootReducer} from "./store/reducers";
 
-export {combineReducers};
 
-const store = createStore(rootReducer);
-const mapStateToProps = state => {
-    return {
-        currentUser:state.app.currentUser
-    }
-}
-const mapDispatchToProps = {
-    setCurrentUser
-}
-const WrappedComponent = connect(mapStateToProps, mapDispatchToProps)(App);
+export const store = createStore(rootReducer);
 
-ReactDOM.render(<Provider store = {store}><WrappedComponent/></Provider>, document.getElementById('root'));
+const saveState = (state) => {
+    const serializedState = JSON.stringify(state);
+    localStorage.setItem('state', serializedState);
+};
+store.subscribe(()=>{
+    saveState(store.getState())
+})
+
+
+
+ReactDOM.render(<Provider store = {store}> <AppContainer/></Provider>, document.getElementById('root'));
