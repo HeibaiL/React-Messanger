@@ -1,7 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {createStore} from "redux";
+import {Provider} from "react-redux";
 
 import './index.css';
-import App from './App';
+import AppContainer from './AppContainer';
+import {rootReducer} from "./store/reducers";
 
-ReactDOM.render(<App />, document.getElementById('root'));
+
+export const store = createStore(rootReducer);
+
+const saveState = (state) => {
+    const serializedState = JSON.stringify(state);
+    localStorage.setItem('state', serializedState);
+};
+store.subscribe(()=>{
+    saveState(store.getState())
+})
+
+
+
+ReactDOM.render(<Provider store = {store}> <AppContainer/></Provider>, document.getElementById('root'));

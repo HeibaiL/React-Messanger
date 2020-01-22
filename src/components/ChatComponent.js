@@ -10,8 +10,9 @@ import {tokenUrl,instanceLocator} from "../chatConfig";
 export default class ChatComponent extends React.Component {
     state = {
         user:undefined,
-        roomId:undefined
+        roomId: undefined
     }
+
     componentDidMount() {
         const chatManager = new ChatManager({
             instanceLocator,
@@ -55,6 +56,7 @@ export default class ChatComponent extends React.Component {
     };
 
     render() {
+
         const {deleteRoom, sendMessage,makeRoom,changeRoom} = this;
         const {handleChange} = this.props;
         const {user,roomId} = this.state;

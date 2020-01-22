@@ -4,16 +4,18 @@ import './App.css';
 import {users} from "./users"
 import {LoggingWindow} from "./components/LoggingWindow";
 import ChatComponent from "./components/ChatComponent";
-import {chatManager} from "./chatConfig";
 
 
 class App extends Component {
     state = {
         loading:false,
         isLogged:false,
-        currentUser: undefined,
-        isIncorrect:false
+        isIncorrect:false,
     };
+
+    handleChange(e){
+        this.setState({[e.target.name]:e.target.value})
+    }
 
     showError(){
         this.setState({isIncorrect:true})
@@ -23,13 +25,14 @@ class App extends Component {
     checkLoginPassword=(login, password)=>{
         login = login.toString();
         password = password.toString();
-          let user = users.filter( user => {
-              if (user.login === login) {
-                  if (user.password === password) return user
-              }
+         let user = users.filter( user => {
+          if (user.login === login) {
+              if (user.password === password) return user
+          }
           })[0]
         if(user){
-            this.setState({currentUser:user, loading:true})
+            this.props.setCurrentUser(user);
+            this.setState( {loading:true})
         }else this.showError()
     }
 
@@ -42,14 +45,9 @@ class App extends Component {
             ), 1500)
     }
 
-    handleChange(e){
-        this.setState({[e.target.name]:e.target.value})
-    }
-
     render() {
         const {
             roomId,
-            currentUser,
             isLogged,
             loading
         } = this.state;
@@ -64,7 +62,7 @@ class App extends Component {
         }else if(isLogged){
            return  <ChatComponent
                 handleChange={this.handleChange}
-                 user={currentUser}
+                 user={this.props.currentUser}
              />
          }else{
              return <LoggingWindow
