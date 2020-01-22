@@ -32,7 +32,6 @@ const mapStateToProps = state => {
             currentUser: serializedState.app.currentUser
         }
     }
-
 }
 const mapDispatchToProps = {
     setCurrentUser

@@ -9,7 +9,6 @@ import ChatComponent from "./components/ChatComponent";
 class App extends Component {
     state = {
         loading:false,
-        isLogged:false,
         isIncorrect:false,
     };
 
@@ -46,11 +45,8 @@ class App extends Component {
     }
 
     render() {
-        const {
-            roomId,
-            isLogged,
-            loading
-        } = this.state;
+        const {loading,isIncorrect} = this.state;
+        const {currentUser} = this.props;
         if(loading){
             return (
                 <div className="lds-ellipsis">
@@ -59,14 +55,14 @@ class App extends Component {
                     <div></div>
                     <div></div>
                 </div>)
-        }else if(isLogged){
+        }else if(currentUser){
            return  <ChatComponent
                 handleChange={this.handleChange}
-                 user={this.props.currentUser}
+                 user={currentUser}
              />
          }else{
              return <LoggingWindow
-                 isIncorrect={this.state.isIncorrect}
+                 isIncorrect={isIncorrect}
                  loadScreen={this.loadScreen}
                  checkLoginPassword={this.checkLoginPassword} handleChange={this.handleChange}/>
          }
