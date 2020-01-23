@@ -14,7 +14,7 @@ const saveState = (state) => {
    localStorage.setItem('state', serializedState);
 };
 store.subscribe(() => {
-   saveState(store.getState())
+   // saveState(store.getState())
 })
 
 

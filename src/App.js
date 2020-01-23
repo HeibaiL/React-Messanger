@@ -69,7 +69,6 @@ class App extends Component {
                 </div>)
         }else if(currentUser){
            return  <ChatComponent
-               logOut={this.props.logOut}
                handleChange={this.handleChange}
                user={currentUser}
              />

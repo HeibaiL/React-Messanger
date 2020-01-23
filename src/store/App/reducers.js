@@ -1,8 +1,9 @@
-import {APP_SET_CURRENTUSER,APP_LOG_OUT} from "./actions";
+import {APP_SET_CURRENTUSER,APP_LOG_OUT,CONNECTED_USER} from "./actions";
 
 
 const defaultState = {
     currentUser: undefined,
+    loggedUser:undefined
 };
 
 export const appReducer = (state= defaultState, action) => {
@@ -17,6 +18,11 @@ export const appReducer = (state= defaultState, action) => {
                 ...state,
              currentUser:action.payload
          };
+        case CONNECTED_USER:
+            return {
+                ...state,
+                loggedUser: action.payload
+            }
     }
         return state;
 }
