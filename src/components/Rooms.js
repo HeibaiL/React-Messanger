@@ -1,44 +1,82 @@
 import React from "react";
+import {connect} from "react-redux"
+import {logOut,updateConnectedUser} from "../store/App/actions"
+
+const mapStateToProps= (state) =>{
+    return {
+        loggedUser:state.app.loggedUser
+    }
+}
+
+const mapDispatchToProps = {
+    logOut,
+    updateConnectedUser
+};
 
 class Rooms extends React.Component {
-    constructor(props){
-    super(props);
-    this.state = {
-    rooms : [],
-    availableRooms : []
+    constructor(props) {
+        super(props);
+        this.state = {
+            rooms: [],
+            availableRooms: [],
+            deleted:false
+        }
+    };
+    addRoom(id){
+    }
+
+    deleteRoom(roomId){
+        if(this.state.deleted){
+            return
+        }
+        this.setState({deleted:true})
+        this.props.user.leaveRoom({roomId}).then(()=> {
+            this.setRooms()
+            this.setState({deleted:false})
+        })
+
+    }
+
+    setRooms() {
+        const {loggedUser} = this.props;
+        if(loggedUser) {
+            const {rooms} = loggedUser;
+            loggedUser.getJoinableRooms().then(avRooms=>{
+                console.log(rooms)
+                this.setState({availableRooms:avRooms,rooms})
+            })
         }
     }
-    setRooms(){
-        if(this.props.user){
-            const {rooms,getJoinableRooms} = this.props.user;
-            this.setState({rooms});
-            return getJoinableRooms().then(rooms => this.setState({availableRooms: rooms}))
-        }
-    }
+
     componentDidMount(){
         this.setRooms()
     }
 
     componentDidUpdate(prevProps) {
-        if(prevProps !== this.props) {
+        if(prevProps !== this.props){
           this.setRooms()
         }
     }
+
     displayRooms(rooms) {
-        const {deleteRoom, changeRoom} = this.props;
+        const {changeRoom} = this.props;
+
         return rooms.map(({createdAt, name, id}) => {
             if(rooms === this.state.availableRooms){
                 return (
                     <li key={createdAt} >
                         <span> #{name}</span>
-                        <i><a className="join-room" href="#" onClick={()=>changeRoom(id)}>+</a></i>
+                        <i><a className="join-room" href="#" onClick={()=> {
+                             changeRoom(id);
+                             this.addRoom(id)
+                        }}>+</a></i>
                     </li>
                 )
             }else{
                 return (
                     <li key={createdAt} >
                         <span onClick={()=>changeRoom(id)}> #{name}</span>
-                        <i onClick={() => deleteRoom(id)}><a href="#" className="close"/></i>
+                        <i onClick={() => this.deleteRoom(id)}><a href="#" className="close"/></i>
                     </li>
                     )
                 }
@@ -49,6 +87,9 @@ class Rooms extends React.Component {
     render(){
         return (
             <div className="rooms">
+                <div className="logout">
+                  <i className="fa fa-sign-out" onClick={this.props.logOut}/>
+                </div>
                 <div className="rooms-container">
                     <h2>Your Rooms:</h2>
                     <ul>
@@ -68,4 +109,4 @@ class Rooms extends React.Component {
 
 
 
-export default Rooms;
+export default connect(mapStateToProps,mapDispatchToProps)(Rooms);

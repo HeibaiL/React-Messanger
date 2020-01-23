@@ -33,7 +33,6 @@ class ChatWindowComponent extends React.Component{
     }
 
     render() {
-
        const { user } = this.props;
        const { messages } = this.state;
         return (

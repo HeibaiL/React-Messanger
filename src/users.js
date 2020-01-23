@@ -1,5 +1,6 @@
-import React from "react"
-let users=[
+import React from "react";
+
+let users = [
     {
         login:"me",
         password:"1",
