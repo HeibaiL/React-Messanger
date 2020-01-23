@@ -1,15 +1,15 @@
 import React from "react";
-import { ChatManager, TokenProvider } from '@pusher/chatkit-client'
+import {ChatManager, TokenProvider} from '@pusher/chatkit-client'
 
 import Rooms from "./Rooms.js";
 import ChatWindow from "./ChatWindow.js";
 import AddRoom from "./AddRoom.js";
 import TextInput from "./TextInput.js";
-import {tokenUrl,instanceLocator} from "../chatConfig";
+import {tokenUrl, instanceLocator} from "../chatConfig";
 
 export default class ChatComponent extends React.Component {
     state = {
-        user:undefined,
+        user: undefined,
         roomId: undefined
     }
 
@@ -17,23 +17,28 @@ export default class ChatComponent extends React.Component {
         const chatManager = new ChatManager({
             instanceLocator,
             userId: this.props.user.id,
-            tokenProvider: new TokenProvider({ url: tokenUrl })
+            tokenProvider: new TokenProvider({url: tokenUrl})
         })
-        chatManager.connect().then(user=>this.setState({user,roomId:user.rooms[0].id}))
+        chatManager.connect().then(user => {
+                this.setState({user})
+            }
+        )
+
     }
+
     //TODO: DELETEROOM FUNC SHOULD CHANGE STATE.ROOMID FOR THE FIRST AVAILABLE ROOM
 
 
     sendMessage = (message) => {
         const {user, roomId} = this.state;
-            user.sendSimpleMessage({
-                roomId,
-                text: message,
-            });
+        user.sendSimpleMessage({
+            roomId,
+            text: message,
+        });
     };
 
     changeRoom = (id) => {
-        this.setState({roomId: id});
+        return this.setState({roomId: id});
     };
 
     makeRoom = (name) => {
@@ -50,21 +55,16 @@ export default class ChatComponent extends React.Component {
         }
     };
 
-    deleteRoom=(roomId)=>{
-        const {user}=this.state;
-        user.leaveRoom({roomId})
-            .then(user=>this.setState(prevState=>({user:prevState.user})))
 
-    };
     componentWillUnmount() {
         localStorage.clear()
     }
 
     render() {
 
-        const {deleteRoom, sendMessage,makeRoom,changeRoom} = this;
-        const {handleChange,logOut} = this.props;
-        const {user,roomId} = this.state;
+        const {deleteRoom, sendMessage, makeRoom, changeRoom} = this;
+        const {handleChange, logOut} = this.props;
+        const {user, roomId} = this.state;
         return (
             <div className="chat-component">
                 <div className="room-chat">
@@ -84,6 +84,6 @@ export default class ChatComponent extends React.Component {
                     <TextInput handleChange={handleChange} sendMessage={sendMessage}/>
                 </div>
             </div>
-            )
-        }
+        )
     }
+}

@@ -1,6 +1,6 @@
 import React from "react";
 
-let users=[
+let users = [
     {
         login:"me",
         password:"1",

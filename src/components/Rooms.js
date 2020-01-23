@@ -1,4 +1,10 @@
 import React from "react";
+import {connect} from "react-redux"
+import {logOut} from "../store/App/actions"
+
+const mapDispatchToProps = {
+    logOut,
+};
 
 class Rooms extends React.Component {
     constructor(props){
@@ -7,14 +13,26 @@ class Rooms extends React.Component {
     rooms : [],
     availableRooms : []
         }
+    };
+
+    deleteRoom(roomId){
+        this.props.user.leaveRoom({roomId})
+        this.setRooms();
     }
+
     setRooms(){
-        if(this.props.user){
-            const {rooms,getJoinableRooms} = this.props.user;
-            this.setState({rooms});
-            return getJoinableRooms().then(rooms => this.setState({availableRooms: rooms}))
+        const {user} = this.props;
+        if(user){
+            console.log(user.rooms)
         }
-    }
+
+        if(user){
+            const {rooms,getJoinableRooms} = user
+            this.setState({rooms});
+            return user.getJoinableRooms().then(rooms => this.setState({availableRooms: rooms}))
+        }
+    };
+
     componentDidMount(){
         this.setRooms()
     }
@@ -25,7 +43,7 @@ class Rooms extends React.Component {
         }
     }
     displayRooms(rooms) {
-        const {deleteRoom, changeRoom} = this.props;
+        const {changeRoom} = this.props;
         return rooms.map(({createdAt, name, id}) => {
             if(rooms === this.state.availableRooms){
                 return (
@@ -38,7 +56,7 @@ class Rooms extends React.Component {
                 return (
                     <li key={createdAt} >
                         <span onClick={()=>changeRoom(id)}> #{name}</span>
-                        <i onClick={() => deleteRoom(id)}><a href="#" className="close"/></i>
+                        <i onClick={() => this.deleteRoom(id)}><a href="#" className="close"/></i>
                     </li>
                     )
                 }
@@ -50,7 +68,7 @@ class Rooms extends React.Component {
         return (
             <div className="rooms">
                 <div className="logout">
-                  <i className="fa fa-sign-out" onClick={this.props.logOut}></i>
+                  <i className="fa fa-sign-out" onClick={this.props.logOut}/>
                 </div>
                 <div className="rooms-container">
                     <h2>Your Rooms:</h2>
@@ -71,4 +89,4 @@ class Rooms extends React.Component {
 
 
 
-export default Rooms;
+export default connect(null,mapDispatchToProps)(Rooms);

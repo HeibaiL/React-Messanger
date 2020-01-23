@@ -1,11 +1,22 @@
 import React, {Component} from 'react';
+import {connect} from "react-redux"
 
 import './App.css';
 import {users} from "./users"
 import {LoggingWindow} from "./components/LoggingWindow";
 import ChatComponent from "./components/ChatComponent";
-import {store} from "./index";
+import {setCurrentUser,logOut} from "./store/App/actions";
 
+
+const mapStateToProps = state => {
+    return {
+        currentUser: state.app.currentUser
+    }
+};
+
+const mapDispatchToProps = {
+    setCurrentUser,
+};
 
 class App extends Component {
     state = {
@@ -71,4 +82,4 @@ class App extends Component {
     }
 }
 
-export default App;
+export default connect(mapStateToProps,mapDispatchToProps)(App);
