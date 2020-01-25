@@ -7,7 +7,7 @@ import ChatWindow from "./ChatWindow.js";
 import AddRoom from "./AddRoom.js";
 import TextInput from "./TextInput.js";
 import {tokenUrl, instanceLocator} from "../chatConfig";
-import {updateConnectedUser} from "../store/App/actions";
+import {setLoggedUser} from "../store/App/actions";
 
 const mapStateToProps = state =>{
     return {
@@ -17,12 +17,11 @@ const mapStateToProps = state =>{
 
 
 const mapDispatchToProps = {
-    updateConnectedUser
+    setLoggedUser
 }
 
 class ChatComponent extends React.Component {
     state = {
-        user: undefined,
         roomId: undefined
     }
 
@@ -35,9 +34,9 @@ class ChatComponent extends React.Component {
         chatManager.connect().then(user => {
             const {loggedUser} = this.props;
             const roomId = this.props.loggedUser;
-               this.props.updateConnectedUser(user)
+               this.props.setLoggedUser(user)
                 if(loggedUser) {
-                    this.setState({roomId: loggedUser.rooms.length > 0 ? loggedUser.rooms[0].id : undefined})
+                    this.setState({roomId})
                 }
     })
 }
@@ -46,8 +45,8 @@ class ChatComponent extends React.Component {
 
 
     sendMessage = (message) => {
-        const {user, roomId} = this.state;
-        user.sendSimpleMessage({
+        const {roomId} = this.state;
+        this.props.loggedUser.sendSimpleMessage({
             roomId,
             text: message,
         });
@@ -60,9 +59,9 @@ class ChatComponent extends React.Component {
     };
 
     makeRoom = (name) => {
-        const {user} = this.state;
+        const {loggedUser} = this.props;
         if (name) {
-            user.createRoom({
+            loggedUser.createRoom({
                 name,
                 id: name,
                 private: false
