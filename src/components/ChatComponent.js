@@ -34,8 +34,11 @@ class ChatComponent extends React.Component {
         })
         chatManager.connect().then(user => {
             const {loggedUser} = this.props;
+            const roomId = this.props.loggedUser;
                this.props.updateConnectedUser(user)
-                this.setState({roomId:user.rooms[0].id})
+                if(loggedUser) {
+                    this.setState({roomId: loggedUser.rooms.length > 0 ? loggedUser.rooms[0].id : undefined})
+                }
     })
 }
 
@@ -52,6 +55,7 @@ class ChatComponent extends React.Component {
 
     changeRoom = (id) => {
         this.setState({roomId: id});
+
 
     };
 
@@ -75,22 +79,20 @@ class ChatComponent extends React.Component {
     }
 
     render() {
-
         const {sendMessage, makeRoom, changeRoom} = this;
-
         const {handleChange, logOut, loggedUser} = this.props;
-        const {user, roomId} = this.state;
+        const { roomId } = this.state;
         return (
             <div className="chat-component">
                 <div className="room-chat">
                     <Rooms
+                        roomId={roomId}
                         logOut={logOut}
-                        user={loggedUser}
                         changeRoom={changeRoom}
                     />
                     <ChatWindow
-                        user={loggedUser}
                         roomId={roomId}
+                        user={loggedUser}
                     />
                 </div>
                 <div className="footer">

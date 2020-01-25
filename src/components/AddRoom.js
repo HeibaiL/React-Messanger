@@ -10,7 +10,6 @@ class AddRoom extends Component{
         if(el.className === "add-room"||el.parentElement.className === "add-room"){
             this.setState({active:true})
         }
-
     };
     cancel=()=>{
         this.setState({active:false})
