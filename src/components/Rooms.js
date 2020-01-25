@@ -1,7 +1,6 @@
 import React from "react";
 import {connect} from "react-redux"
-import {logOut, updateConnectedUser} from "../store/App/actions";
-import {store} from "../index";
+import {logOut, setLoggedUser} from "../store/App/actions";
 
 const mapStateToProps = (state) => {
     return {
@@ -11,7 +10,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
     logOut,
-    updateConnectedUser
+    setLoggedUser
 };
 
 class Rooms extends React.Component {
@@ -23,7 +22,7 @@ class Rooms extends React.Component {
             deleted: false
         }
     };
-    addRoom(roomId){
+    joinRoom(roomId){
         const {loggedUser} = this.props;
         loggedUser.joinRoom({roomId}).then(()=>this.setRooms())
     }
@@ -38,8 +37,7 @@ class Rooms extends React.Component {
             this.setState({deleted: true})
             this.props.loggedUser.leaveRoom({roomId}).then(() => {
                 this.setRooms()
-                this.setState({deleted: false})
-            })
+            }).then( this.setState({deleted: false}));
     }
 
     setRooms() {
@@ -67,11 +65,10 @@ class Rooms extends React.Component {
         if (rooms === this.state.availableRooms) {
                 return rooms.map(({createdAt, name, id}) => {
                         return (
-                            <li key={createdAt + 1}>
+                            <li key={createdAt}>
                                 <span> #{name}</span>
                                 <i><a className="join-room" href="#" onClick={() => {
-                                    changeRoom(id);
-                                    this.addRoom(id);
+                                    this.joinRoom(id);
                                 }}>+</a></i>
                             </li>
                         )
@@ -90,7 +87,6 @@ class Rooms extends React.Component {
     }
 
     render() {
-    console.log(this.props)
         return (
             <div className="rooms">
                 <div className="logout">
