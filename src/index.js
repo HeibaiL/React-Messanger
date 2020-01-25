@@ -13,9 +13,9 @@ const saveState = (state) => {
     const serializedState = JSON.stringify(state);
    localStorage.setItem('state', serializedState);
 };
-store.subscribe(() => {
-   // saveState(store.getState())
-})
+// store.subscribe(() => {
+//    saveState(store.getState())
+// })
 
 
 ReactDOM.render(

@@ -1,10 +1,11 @@
 import React from "react";
 import {connect} from "react-redux"
-import {logOut,updateConnectedUser} from "../store/App/actions"
+import {logOut, updateConnectedUser} from "../store/App/actions";
+import {store} from "../index";
 
-const mapStateToProps= (state) =>{
+const mapStateToProps = (state) => {
     return {
-        loggedUser:state.app.loggedUser
+        loggedUser: state.app.loggedUser
     }
 }
 
@@ -19,76 +20,81 @@ class Rooms extends React.Component {
         this.state = {
             rooms: [],
             availableRooms: [],
-            deleted:false
+            deleted: false
         }
     };
-    addRoom(id){
+    addRoom(roomId){
+        const {loggedUser} = this.props;
+        loggedUser.joinRoom({roomId}).then(()=>this.setRooms())
     }
 
-    deleteRoom(roomId){
-        if(this.state.deleted){
-            return
+    deleteRoom(roomId) {
+        if (this.state.deleted) {
+            return;
         }
-        this.setState({deleted:true})
-        this.props.user.leaveRoom({roomId}).then(()=> {
-            this.setRooms()
-            this.setState({deleted:false})
-        })
-
+        if (this.props.roomId === roomId) {
+            return;
+        }
+            this.setState({deleted: true})
+            this.props.loggedUser.leaveRoom({roomId}).then(() => {
+                this.setRooms()
+                this.setState({deleted: false})
+            })
     }
 
     setRooms() {
         const {loggedUser} = this.props;
-        if(loggedUser) {
+        if (loggedUser) {
             const {rooms} = loggedUser;
-            loggedUser.getJoinableRooms().then(avRooms=>{
-                console.log(rooms)
-                this.setState({availableRooms:avRooms,rooms})
+            loggedUser.getJoinableRooms().then(avRooms => {
+                this.setState({availableRooms: avRooms, rooms})
             })
         }
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.setRooms()
     }
 
     componentDidUpdate(prevProps) {
-        if(prevProps !== this.props){
-          this.setRooms()
+        if (prevProps !== this.props) {
+            this.setRooms()
         }
     }
 
     displayRooms(rooms) {
         const {changeRoom} = this.props;
-
-        return rooms.map(({createdAt, name, id}) => {
-            if(rooms === this.state.availableRooms){
-                return (
-                    <li key={createdAt} >
-                        <span> #{name}</span>
-                        <i><a className="join-room" href="#" onClick={()=> {
-                             changeRoom(id);
-                             this.addRoom(id)
-                        }}>+</a></i>
-                    </li>
+        if (rooms === this.state.availableRooms) {
+                return rooms.map(({createdAt, name, id}) => {
+                        return (
+                            <li key={createdAt + 1}>
+                                <span> #{name}</span>
+                                <i><a className="join-room" href="#" onClick={() => {
+                                    changeRoom(id);
+                                    this.addRoom(id);
+                                }}>+</a></i>
+                            </li>
+                        )
+                    }
                 )
-            }else{
+        } else {
+            return rooms.map(({createdAt, name, id}) => {
                 return (
-                    <li key={createdAt} >
-                        <span onClick={()=>changeRoom(id)}> #{name}</span>
+                    <li key={createdAt}>
+                        <span onClick={() => changeRoom(id)}> #{name}</span>
                         <i onClick={() => this.deleteRoom(id)}><a href="#" className="close"/></i>
                     </li>
-                    )
-                }
-            }
-        )
+                )
+            })
+        }
     }
 
-    render(){
+    render() {
+    console.log(this.props)
         return (
             <div className="rooms">
                 <div className="logout">
-                  <i className="fa fa-sign-out" onClick={this.props.logOut}/>
+                    <i className="fa fa-sign-out" onClick={this.props.logOut}/>
                 </div>
                 <div className="rooms-container">
                     <h2>Your Rooms:</h2>
@@ -99,7 +105,7 @@ class Rooms extends React.Component {
                 <div className="available-rooms">
                     <h2> Available rooms</h2>
                     <ul>
-                        {this.displayRooms(this.state. availableRooms)}
+                        {this.displayRooms(this.state.availableRooms)}
                     </ul>
                 </div>
             </div>
@@ -108,5 +114,4 @@ class Rooms extends React.Component {
 }
 
 
-
-export default connect(mapStateToProps,mapDispatchToProps)(Rooms);
+export default connect(mapStateToProps, mapDispatchToProps)(Rooms);
