@@ -24,6 +24,7 @@ class LoggingWindow extends Component {
     }
 
     render() {
+
         const {handleChange, checkLoginPassword, isIncorrect} = this.props;
         const {login, password, isEmpty} = this.state;
         return (

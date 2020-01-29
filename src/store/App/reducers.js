@@ -16,7 +16,8 @@ export const appReducer = (state= defaultState, action) => {
         case LOG_OUT:
          return{
                 ...state,
-             currentUser:action.payload
+             currentUser:action.payload,
+             loggedUser: action.payload
          };
         case SET_LOGGED_USER:
             return {

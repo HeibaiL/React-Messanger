@@ -1,13 +1,13 @@
 import React from "react";
 import {ChatManager, TokenProvider} from '@pusher/chatkit-client';
-import {connect} from "react-redux"
+import {connect} from "react-redux";
 
 import Rooms from "./Rooms.js";
 import ChatWindow from "./ChatWindow.js";
 import AddRoom from "./AddRoom.js";
 import TextInput from "./TextInput.js";
 import {tokenUrl, instanceLocator} from "../chatConfig";
-import {setLoggedUser} from "../store/App/actions";
+import {setLoggedUser,logOut} from "../store/App/actions";
 
 const mapStateToProps = state =>{
     return {
@@ -17,7 +17,8 @@ const mapStateToProps = state =>{
 
 
 const mapDispatchToProps = {
-    setLoggedUser
+    setLoggedUser,
+    logOut
 }
 
 class ChatComponent extends React.Component {
@@ -38,8 +39,8 @@ class ChatComponent extends React.Component {
                 if(loggedUser) {
                     this.setState({roomId})
                 }
-    })
-}
+        })
+    }
 
     //TODO: DELETEROOM FUNC SHOULD CHANGE STATE.ROOMID FOR THE FIRST AVAILABLE ROOM
 
@@ -54,8 +55,6 @@ class ChatComponent extends React.Component {
 
     changeRoom = (id) => {
         this.setState({roomId: id});
-
-
     };
 
     makeRoom = (name) => {
@@ -75,6 +74,7 @@ class ChatComponent extends React.Component {
 
     componentWillUnmount() {
         localStorage.clear()
+        this.props.logOut();
     }
 
     render() {

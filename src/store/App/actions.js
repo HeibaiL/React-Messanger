@@ -7,12 +7,12 @@ export const setCurrentUser = (user)=>({
         payload:user
     }
     );
-export const setLoggedUser = (user)=>({
+export const setLoggedUser = (user) => ({
     type:SET_LOGGED_USER,
     payload:user
 })
 
-export const logOut = ()=>({
+export const logOut = () => ({
     type:LOG_OUT,
     payload:undefined
     }
