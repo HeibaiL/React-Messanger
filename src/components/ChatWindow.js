@@ -16,7 +16,6 @@ class ChatWindowComponent extends React.Component{
         }
     }
 
-
     showMessages=()=>{
         const {roomId,user} = this.props;
         this.setState({messages:[]});
@@ -28,7 +27,8 @@ class ChatWindowComponent extends React.Component{
                         this.setState(state => {
                             return({
                                 messages: state.messages.concat(msg)
-                            })})
+                            })
+                        })
                     }
                 }
             });
