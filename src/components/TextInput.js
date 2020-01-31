@@ -5,16 +5,22 @@ export default class TextInput extends Component{
         text:""
     };
 
-    handleKeyPress=(e)=>{
+    sendMessage = (message) => {
+        const {roomId} = this.props;
+        this.props.user.sendSimpleMessage({
+            roomId,
+            text: message,
+        });
+    };
+
+    componentDidMount() {
+        document.addEventListener("keydown", (e)=>{
         if(e.keyCode===13&&this.state.text.length>0){
-            this.props.sendMessage(this.state.text);
+            this.sendMessage(this.state.text)
             e.target.value=""
         }
-
+    })
     };
-    componentDidMount() {
-        document.addEventListener("keydown", this.handleKeyPress)
-    }
 
     render(){
         return (

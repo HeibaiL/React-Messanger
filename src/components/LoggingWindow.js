@@ -1,4 +1,12 @@
 import React, {Component} from "react";
+import {connect} from "react-redux";
+
+import {users} from "../users";
+import {setCurrentUser} from "../store/App/actions";
+
+const mapDispatchToProps={
+    setCurrentUser
+}
 
 class LoggingWindow extends Component {
     constructor(props) {
@@ -6,12 +14,18 @@ class LoggingWindow extends Component {
         this.state = {
             login: "",
             password: "",
-            isEmpty: false
+            isEmpty: false,
+            isIncorrect:""
         }
     }
 
     componentWillUnmount() {
-        this.props.loadScreen();
+    this.props.loadScreen();
+    }
+
+    showError(){
+        this.setState({isIncorrect:true})
+        setTimeout(()=>this.setState({isIncorrect:false}),2000)
     }
 
     emptyFieldCheck = (login, password) => {
@@ -21,12 +35,24 @@ class LoggingWindow extends Component {
             return true;
         }
         return false
+    };
+
+    checkLoginPassword=(login, password)=>{
+        let user = users.filter( user => {
+            if (user.login === login) {
+                if (user.password === password) return user
+            }
+        })[0]
+        if(user){
+            this.props.setCurrentUser(user);
+            this.setState( {loading:true})
+        }else this.showError()
     }
 
     render() {
 
-        const {handleChange, checkLoginPassword, isIncorrect} = this.props;
-        const {login, password, isEmpty} = this.state;
+        const {handleChange} = this.props;
+        const {login, password, isEmpty, isIncorrect} = this.state;
         return (
             <div className="container validation">
                 {isEmpty ?
@@ -54,7 +80,7 @@ class LoggingWindow extends Component {
                     <a className="button" href="#"
                        onClick={
                            () => {
-                               if (!this.emptyFieldCheck(login, password)) checkLoginPassword(login, password);
+                               if (!this.emptyFieldCheck(login, password)) this.checkLoginPassword(login, password);
                            }}>
                         Log In
                     </a>
@@ -64,4 +90,4 @@ class LoggingWindow extends Component {
     }
 }
 
-export {LoggingWindow}
+export default connect(null, mapDispatchToProps)(LoggingWindow)

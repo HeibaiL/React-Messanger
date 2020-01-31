@@ -1,6 +1,5 @@
 import {APP_SET_CURRENTUSER,LOG_OUT,SET_LOGGED_USER} from "./actions";
 
-
 const defaultState = {
     currentUser: undefined,
     loggedUser:undefined
