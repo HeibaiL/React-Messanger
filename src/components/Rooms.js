@@ -59,7 +59,6 @@ class Rooms extends React.Component {
         }
     }
 
-
     displayRooms(rooms) {
         const {changeRoom} = this.props;
         if (rooms === this.state.availableRooms) {

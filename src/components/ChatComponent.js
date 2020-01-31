@@ -65,7 +65,7 @@ class ChatComponent extends React.Component {
 
     render() {
 
-        const {sendMessage, makeRoom, changeRoom} = this;
+        const {makeRoom, changeRoom} = this;
         const {handleChange, loggedUser} = this.props;
         const { roomId } = this.state;
         return (

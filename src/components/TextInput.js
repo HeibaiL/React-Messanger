@@ -14,7 +14,7 @@ export default class TextInput extends Component{
     };
 
     componentDidMount() {
-        document.addEventListener("keydown", (e)=>{
+        document.addEventListener("keydown", e =>{
         if(e.keyCode===13&&this.state.text.length>0){
             this.sendMessage(this.state.text)
             e.target.value=""
