@@ -15,10 +15,12 @@ class ChatWindowComponent extends React.Component{
             this.showMessages()
         }
     }
+
+
     showMessages=()=>{
         const {roomId,user} = this.props;
-        this.setState({messages:[]})
-        if(roomId){
+        this.setState({messages:[]});
+        if(user&&roomId){
             user.subscribeToRoom({
                 roomId,
                 hooks: {
@@ -31,7 +33,7 @@ class ChatWindowComponent extends React.Component{
                 }
             });
         }
-    }
+    };
 
     render() {
        const { user } = this.props;
@@ -39,14 +41,15 @@ class ChatWindowComponent extends React.Component{
         return (
             <div className="chat-window">
                 <div className="chat-content">
-                    {messages.map(({id, text, senderId}) => (
+                    { user?messages.map(({id, text, senderId}) => (
                         <div
                             key={id}
                             className={`${senderId === user.id ? 'user' : 'partner'} messages`}
                         >
                             <p className="message">{text}</p>
                         </div>
-                    ))}
+                    )):null
+                    }
                 </div>
             </div>
         );

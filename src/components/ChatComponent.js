@@ -15,7 +15,6 @@ const mapStateToProps = state =>{
     }
 }
 
-
 const mapDispatchToProps = {
     setLoggedUser,
     logOut
@@ -31,27 +30,16 @@ class ChatComponent extends React.Component {
             instanceLocator,
             userId: this.props.user.id,
             tokenProvider: new TokenProvider({url: tokenUrl})
-        })
+        });
         chatManager.connect().then(user => {
-            const {loggedUser} = this.props;
-            const roomId = this.props.loggedUser;
                this.props.setLoggedUser(user)
+               const {loggedUser} = this.props;
                 if(loggedUser) {
-                    this.setState({roomId})
+                    this.setState({roomId:loggedUser.rooms[0].id})
                 }
         })
     }
 
-    //TODO: DELETEROOM FUNC SHOULD CHANGE STATE.ROOMID FOR THE FIRST AVAILABLE ROOM
-
-
-    sendMessage = (message) => {
-        const {roomId} = this.state;
-        this.props.loggedUser.sendSimpleMessage({
-            roomId,
-            text: message,
-        });
-    };
 
     changeRoom = (id) => {
         this.setState({roomId: id});
@@ -71,23 +59,21 @@ class ChatComponent extends React.Component {
         }
     };
 
-
     componentWillUnmount() {
-        localStorage.clear()
-        this.props.logOut();
+        localStorage.clear();
     }
 
     render() {
+
         const {sendMessage, makeRoom, changeRoom} = this;
-        const {handleChange, logOut, loggedUser} = this.props;
+        const {handleChange, loggedUser} = this.props;
         const { roomId } = this.state;
         return (
             <div className="chat-component">
                 <div className="room-chat">
                     <Rooms
-                        roomId={roomId}
-                        logOut={logOut}
                         changeRoom={changeRoom}
+                        roomId={roomId}
                     />
                     <ChatWindow
                         roomId={roomId}
@@ -96,7 +82,7 @@ class ChatComponent extends React.Component {
                 </div>
                 <div className="footer">
                     <AddRoom makeRoom={makeRoom} handleChange={handleChange}/>
-                    <TextInput handleChange={handleChange} sendMessage={sendMessage}/>
+                    <TextInput handleChange={handleChange} user={loggedUser} roomId={roomId}/>
                 </div>
             </div>
         )

@@ -22,22 +22,31 @@ class Rooms extends React.Component {
             deleted: false
         }
     };
+
+    componentDidMount() {
+        this.setRooms()
+    };
+
+    componentDidUpdate(prevProps) {
+        if (prevProps !== this.props) {
+            this.setRooms()
+        }
+    };
+
     joinRoom(roomId){
         const {loggedUser} = this.props;
-        loggedUser.joinRoom({roomId}).then(()=>this.setRooms())
+        loggedUser.joinRoom({roomId})
+            .then(()=>this.setRooms())
     }
 
     deleteRoom(roomId) {
-        if (this.state.deleted) {
-            return;
-        }
         if (this.props.roomId === roomId) {
             return;
         }
-            this.setState({deleted: true})
-            this.props.loggedUser.leaveRoom({roomId}).then(() => {
-                this.setRooms()
-            }).then( this.setState({deleted: false}));
+        this.setState({deleted: true})
+        this.props.loggedUser.leaveRoom({roomId}).then(() => {
+            this.setRooms();
+        }).then( this.setState({deleted: false}));
     }
 
     setRooms() {
@@ -50,15 +59,6 @@ class Rooms extends React.Component {
         }
     }
 
-    componentDidMount() {
-        this.setRooms()
-    }
-
-    componentDidUpdate(prevProps) {
-        if (prevProps !== this.props) {
-            this.setRooms()
-        }
-    }
 
     displayRooms(rooms) {
         const {changeRoom} = this.props;
@@ -79,7 +79,8 @@ class Rooms extends React.Component {
                 return (
                     <li key={createdAt}>
                         <span onClick={() => changeRoom(id)}> #{name}</span>
-                        <i onClick={() => this.deleteRoom(id)}><a href="#" className="close"/></i>
+                        <i className="fas fa-user-plus"></i>
+                        <i onClick={!this.state.deleted?() => this.deleteRoom(id):null}><a href="#" className="close"/></i>
                     </li>
                 )
             })
