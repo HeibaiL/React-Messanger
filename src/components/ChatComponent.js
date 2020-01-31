@@ -7,7 +7,7 @@ import ChatWindow from "./ChatWindow.js";
 import AddRoom from "./AddRoom.js";
 import TextInput from "./TextInput.js";
 import {tokenUrl, instanceLocator} from "../chatConfig";
-import {setLoggedUser,logOut} from "../store/App/actions";
+import {setLoggedUser} from "../store/App/actions";
 
 const mapStateToProps = state =>{
     return {
@@ -17,7 +17,6 @@ const mapStateToProps = state =>{
 
 const mapDispatchToProps = {
     setLoggedUser,
-    logOut
 }
 
 class ChatComponent extends React.Component {
@@ -35,11 +34,10 @@ class ChatComponent extends React.Component {
                this.props.setLoggedUser(user)
                const {loggedUser} = this.props;
                 if(loggedUser) {
-                    this.setState({roomId:loggedUser.rooms[0].id})
+                    // this.setState({roomId:loggedUser.rooms[0].id})
                 }
         })
     }
-
 
     changeRoom = (id) => {
         this.setState({roomId: id});
@@ -54,7 +52,6 @@ class ChatComponent extends React.Component {
                 private: false
             }).then(() => {
                 this.setState({roomId: name});
-                this.sendMessage("Created New Room");
             });
         }
     };
@@ -64,7 +61,6 @@ class ChatComponent extends React.Component {
     }
 
     render() {
-
         const {makeRoom, changeRoom} = this;
         const {handleChange, loggedUser} = this.props;
         const { roomId } = this.state;

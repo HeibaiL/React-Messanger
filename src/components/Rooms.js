@@ -1,6 +1,7 @@
 import React from "react";
 import {connect} from "react-redux"
 import {logOut, setLoggedUser} from "../store/App/actions";
+import AddUser from "./AddUser"
 
 const mapStateToProps = (state) => {
     return {
@@ -19,8 +20,9 @@ class Rooms extends React.Component {
         this.state = {
             rooms: [],
             availableRooms: [],
-            deleted: false
-        }
+            roomToAddTo: "",
+            //TODO: ADD FLAG ON DELETEROOM FUNC
+        };
     };
 
     componentDidMount() {
@@ -33,20 +35,23 @@ class Rooms extends React.Component {
         }
     };
 
-    joinRoom(roomId){
+    joinRoom(roomId) {
         const {loggedUser} = this.props;
         loggedUser.joinRoom({roomId})
-            .then(()=>this.setRooms())
+            .then(() => this.setRooms())
+    }
+
+
+    cancel = () => {
+        this.setState({roomToAddTo:""})
     }
 
     deleteRoom(roomId) {
         if (this.props.roomId === roomId) {
             return;
         }
-        this.setState({deleted: true})
-        this.props.loggedUser.leaveRoom({roomId}).then(() => {
-            this.setRooms();
-        }).then( this.setState({deleted: false}));
+        this.props.loggedUser.leaveRoom({roomId}).then(() => this.setRooms())
+
     }
 
     setRooms() {
@@ -62,24 +67,26 @@ class Rooms extends React.Component {
     displayRooms(rooms) {
         const {changeRoom} = this.props;
         if (rooms === this.state.availableRooms) {
-                return rooms.map(({createdAt, name, id}) => {
-                        return (
-                            <li key={createdAt}>
-                                <span> #{name}</span>
-                                <i><a className="join-room" href="#" onClick={() => {
-                                    this.joinRoom(id);
-                                }}>+</a></i>
-                            </li>
-                        )
-                    }
-                )
+            return rooms.map(({createdAt, name, id}) => {
+                    return (
+                        <li key={createdAt}>
+                            <span> #{name}</span>
+                            <i><a className="join-room" href="#" onClick={() => {
+                                this.joinRoom(id);
+                            }}>+</a></i>
+                        </li>
+                    )
+                }
+            )
         } else {
             return rooms.map(({createdAt, name, id}) => {
                 return (
-                    <li key={createdAt}>
+                    <li key={createdAt + 1}>
                         <span onClick={() => changeRoom(id)}> #{name}</span>
-                        <i className="fas fa-user-plus"></i>
-                        <i onClick={!this.state.deleted?() => this.deleteRoom(id):null}><a href="#" className="close"/></i>
+                        <i className="fas fa-user-plus" onClick={() => {
+                            this.setState({roomToAddTo: id})
+                        }}/>
+                        <i onClick={() => this.deleteRoom(id)}><a href="#" className="close"/></i>
                     </li>
                 )
             })
@@ -87,21 +94,23 @@ class Rooms extends React.Component {
     }
 
     render() {
+        const {rooms, roomToAddTo, availableRooms} = this.state;
         return (
             <div className="rooms">
+                {roomToAddTo ? <AddUser roomId={roomToAddTo} cancel={this.cancel}/> : null}
                 <div className="logout">
                     <i className="fa fa-sign-out" onClick={this.props.logOut}/>
                 </div>
                 <div className="rooms-container">
                     <h2>Your Rooms:</h2>
                     <ul>
-                        {this.displayRooms(this.state.rooms)}
+                        {this.displayRooms(rooms)}
                     </ul>
                 </div>
                 <div className="available-rooms">
                     <h2> Available rooms</h2>
                     <ul>
-                        {this.displayRooms(this.state.availableRooms)}
+                        {this.displayRooms(availableRooms)}
                     </ul>
                 </div>
             </div>

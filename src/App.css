@@ -186,6 +186,7 @@ form{
   align-items:flex-start;
 }
 .container{
+  z-index: 20;
   padding-top:3vh;
   width:40vw;
   height:20vh;
@@ -204,14 +205,14 @@ form{
   text-align: center;
   font-family: Arial;
 }
-.create-room input{
+.inputText{
   border-radius:10px;
   height:3vh;
   font-size:20px;
   font-weight:bold;
   padding:0 10px;
 }
-.create-room h2{
+.container h2{
   margin-bottom:2.5vh;
 }
 .button{
@@ -221,17 +222,17 @@ form{
   cursor:pointer;
   transition:0.6s ease;
 }
-.create-room input:focus{
+.inputText:focus{
   outline-width: 0;
 }
-.room-buttons{
+.buttons-set{
   width:80%;
   margin:0 auto;
   margin-top:20px;
   display:flex;
   justify-content: space-between;
 }
-.create-room a:hover{
+.buttons-set a:hover{
   background: rgb(204, 102, 153);
   transition:0.6s ease;
 }
@@ -377,3 +378,12 @@ form{
     transform: translate(24px, 0);
   }
 }
+
+.add-user{
+  text-align: center;
+}
+.add-user h2{
+  color:black;
+}
+
+

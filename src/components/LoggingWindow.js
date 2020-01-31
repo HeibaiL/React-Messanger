@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import {users} from "../users";
 import {setCurrentUser} from "../store/App/actions";
 
-const mapDispatchToProps={
+const mapDispatchToProps = {
     setCurrentUser
 }
 
@@ -15,17 +15,13 @@ class LoggingWindow extends Component {
             login: "",
             password: "",
             isEmpty: false,
-            isIncorrect:""
+            isIncorrect: ""
         }
     }
 
-    componentWillUnmount() {
-    this.props.loadScreen();
-    }
-
-    showError(){
-        this.setState({isIncorrect:true})
-        setTimeout(()=>this.setState({isIncorrect:false}),2000)
+    showError() {
+        this.setState({isIncorrect: true})
+        setTimeout(() => this.setState({isIncorrect: false}), 2000)
     }
 
     emptyFieldCheck = (login, password) => {
@@ -37,16 +33,16 @@ class LoggingWindow extends Component {
         return false
     };
 
-    checkLoginPassword=(login, password)=>{
-        let user = users.filter( user => {
+    checkLoginPassword = (login, password) => {
+        let user = users.filter(user => {
             if (user.login === login) {
                 if (user.password === password) return user
             }
         })[0]
-        if(user){
+        if (user) {
+            this.props.loadScreen();
             this.props.setCurrentUser(user);
-            this.setState( {loading:true})
-        }else this.showError()
+        } else this.showError()
     }
 
     render() {

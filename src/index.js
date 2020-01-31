@@ -14,7 +14,7 @@ const saveState = (state) => {
    localStorage.setItem('state', serializedState);
 };
 
-store.subscribe(()=>console.log(store.getState())
+store.subscribe(()=>saveState(store.getState().app.currentUser)
 )
 
 ReactDOM.render(

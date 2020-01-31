@@ -5,6 +5,17 @@ import './App.css';
 import LoggingWindow from "./components/LoggingWindow";
 import ChatComponent from "./components/ChatComponent";
 
+ const loadState = () => {
+    try {
+        const serializedState = localStorage.getItem('state');
+        if (serializedState === null) {
+            return undefined;
+        }
+        return JSON.parse(serializedState);
+    } catch (err) {
+        return undefined;
+    }
+};
 
 const mapStateToProps = state => {
     return {
@@ -15,7 +26,12 @@ const mapStateToProps = state => {
 class App extends Component {
     state = {
         loading: false,
+        isLogged:false
+
     };
+    componentDidMount() {
+
+    }
 
     handleChange(e) {
         this.setState({[e.target.name]: e.target.value})
@@ -31,9 +47,9 @@ class App extends Component {
     };
 
     render() {
-
+        const serializedState = loadState();
+        const currentUser = serializedState?serializedState:this.props.currentUser;
         const {loading} = this.state;
-        const {currentUser} = this.props;
         if (loading) {
             return (
                 <div className="lds-ellipsis">

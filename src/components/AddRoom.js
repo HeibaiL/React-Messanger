@@ -25,7 +25,7 @@ class AddRoom extends Component{
                                 Enter Room Name
                             </h2>
                             <input className="inputText" name="inputText" onChange={handleChange.bind(this)}/>
-                            <div className="room-buttons">
+                            <div className="buttons-set">
                                 <a className="button" onClick={this.cancel}>
                                      Cancel
                                 </a>
